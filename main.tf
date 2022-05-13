@@ -20,7 +20,7 @@ data "ibm_iam_user_profile" "user_profile" {
 
 data "ibm_space" "space" {
   name = "dev"
-  org = ibm_iam_user_profile.user_profile.email
+  org = data.ibm_iam_user_profile.user_profile.email
 }
 
 resource "ibm_service_instance" "service-instance" {
