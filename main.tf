@@ -14,9 +14,13 @@ EOF
   }
 }
 
+data "ibm_iam_user_profile" "user_profile" {
+  iam_id = var.iam_id
+}
+
 data "ibm_space" "space" {
-  org = var.org
-  space = var.space
+  name = "dev"
+  org = ibm_iam_user_profile.user_profile.email
 }
 
 resource "ibm_service_instance" "service-instance" {
