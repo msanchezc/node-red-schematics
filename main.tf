@@ -19,7 +19,7 @@ data "ibm_space" "space" {
   org = var.org
 }
 
-resource "ibm_service_instance" "service-instance" {
+resource "ibm_service_instance" "cloudant-service" {
   name       = "cloudant"
   space_guid = data.ibm_space.space.id
   service    = "cloudantNoSQLDB"
@@ -27,14 +27,14 @@ resource "ibm_service_instance" "service-instance" {
   tags       = ["cluster-service", "cluster-bind"]
 }
 
-resource "ibm_service_key" "service-key" {
+resource "ibm_service_key" "cloudant-key" {
   name                  = "cloudant-key"
-  service_instance_guid = ibm_service_instance.service-instance.id
+  service_instance_guid = ibm_service_instance.cloudant-service.id
 }
 
 resource "ibm_app" "app" {
   depends_on = [
-    ibm_service_key.service-key,
+    ibm_service_key.cloudant-key,
     null_resource.prepare_app_zip,
   ]
   name              = var.app_name
@@ -47,7 +47,7 @@ resource "ibm_app" "app" {
   memory                = 256
   instances             = 1
   disk_quota            = 512
-  service_instance_guid = [ibm_service_instance.service-instance.id]
+  service_instance_guid = [ibm_service_instance.cloudant-service.id]
   app_version           = "1"
   command               = "npm start"
 }
