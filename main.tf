@@ -40,7 +40,7 @@ resource "ibm_app" "app" {
   name              = var.app_name
   space_guid        = data.ibm_space.space.id
   app_path          = "/tmp/app.zip"
-  wait_time_minutes = 10
+  wait_time_minutes = 30
 
   buildpack  = "https://github.com/cloudfoundry/nodejs-buildpack.git"
   
