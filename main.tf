@@ -4,7 +4,7 @@ resource "null_resource" "prepare_app_zip" {
         mkdir -p /tmp/app
         cd /tmp/app
         git init
-        git remote add origin https://github.com/msanchezc/node-red-app
+        git remote add origin https://github.com/IBM/node-red-app
         git fetch
         git checkout -t origin/master
         zip -r /tmp/app.zip *
