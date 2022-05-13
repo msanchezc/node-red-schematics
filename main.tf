@@ -7,7 +7,7 @@ resource "null_resource" "prepare_app_zip" {
         git remote add origin https://github.com/msanchezc/node-red-app
         git fetch
         git checkout -t origin/master
-        zip -r app.zip *
+        zip -r /tmp/app.zip *
         
 EOF
 
