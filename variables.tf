@@ -8,6 +8,7 @@ variable "space" {
 }
 
 variable "app_name" {
+  description = "Application name"
   default = "nodered"
 }
 
