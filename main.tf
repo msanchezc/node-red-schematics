@@ -32,6 +32,22 @@ resource "ibm_service_key" "cloudant-key" {
   service_instance_guid = ibm_service_instance.cloudant-service.id
 }
 
+data "ibm_app_domain_shared" "domain" {
+  name = "mybluemix.net"
+}
+
+resource "random_pet" "hostname" {
+  length    = 3
+  prefix    = var.app_name
+  separator = "-"
+}
+
+resource "ibm_app_route" "route" {
+  domain_guid = data.ibm_app_domain_shared.domain.id
+  space_guid  = data.ibm_space.space.id
+  host        = random_pet.hostname.id
+}
+
 resource "ibm_app" "app" {
   depends_on = [
     ibm_service_key.cloudant-key,
@@ -47,6 +63,7 @@ resource "ibm_app" "app" {
   memory                = 256
   instances             = 1
   disk_quota            = 512
+  route_guid            = [ibm_app_route.route.id]
   service_instance_guid = [ibm_service_instance.cloudant-service.id]
   app_version           = "1"
   command               = "npm start"
